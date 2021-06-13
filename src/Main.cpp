@@ -2,6 +2,8 @@
 #include <SDL_image.h>
 #include <stdio.h>
 #include <vector>
+
+#include "time.h"
 #include "RenderWindow.h"
 #include "Entity.h"
 
@@ -22,24 +24,44 @@ int main(int argc, char* args[])
 	SDL_Texture* sky = window.loadTexture("gfx/tiles1.png");
 	SDL_Texture* quote = window.loadTexture("gfx/quote.png");
 	std::vector<Entity> entities = {
-		Entity(0,0, sky),
-		Entity(100,100, quote),
-		Entity(100,0, sky),
+		Entity(Vector2f(0,0), sky),
+		Entity(Vector2f(100,100), quote),
+		Entity(Vector2f(100,0), sky),
 	};
 
 	bool progRunning = true;
 	SDL_Event event;
+	const float timeStep = 0.01f;
+	float ac = 0.0f;
+	float currentTime = time::hireTimeInSeconds();
 	while (progRunning)
 	{
-		while (SDL_PollEvent(&event))
+		int startTicks = SDL_GetTicks();
+		float newTime = time::hireTimeInSeconds();
+		float frameTime = newTime - currentTime;
+
+		currentTime = newTime;
+		ac += frameTime;
+
+		while (ac >= timeStep)
 		{
-			if (event.type == SDL_QUIT)
-				progRunning = false; 
+			while (SDL_PollEvent(&event))
+			{
+				if (event.type == SDL_QUIT)
+					progRunning = false;
+			}
+			ac -= timeStep;
+			
 		}
+		const float alpha = ac / timeStep;
 		window.clear();
-		for(Entity& i : entities)
+		for (Entity& i : entities)
 			window.render(i);
 		window.display();
+
+		int frameTicks = SDL_GetTicks() - startTicks;
+		if (frameTicks < 1000)
+			SDL_Delay(1000 - frameTicks);
 	}
 	window.cleanUp();
 	SDL_Quit();

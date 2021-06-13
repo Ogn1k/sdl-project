@@ -142,13 +142,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Math.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\RenderWindow.cpp" />
+    <ClCompile Include="src\time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\RenderWindow.h" />
+    <ClInclude Include="src\time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

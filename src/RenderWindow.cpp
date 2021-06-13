@@ -12,7 +12,7 @@ RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
 	if (window == NULL)
 		printf("window failed to init, SDL_Error: %s", SDL_GetError());
 	
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 }
 	
 SDL_Texture* RenderWindow::loadTexture(const char* p_filePath)
@@ -43,8 +43,8 @@ void RenderWindow::render(Entity& p_entity)
 	src.h = p_entity.getCurrentFrame().h;
 
 	SDL_Rect dst;
-	dst.x = p_entity.getX();
-	dst.y = p_entity.getY();
+	dst.x = p_entity.getPos().x;
+	dst.y = p_entity.getPos().y;
 	dst.w = p_entity.getCurrentFrame().w * 3;
 	dst.h = p_entity.getCurrentFrame().h * 3;
 
